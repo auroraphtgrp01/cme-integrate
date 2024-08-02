@@ -24,7 +24,7 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - '5435:5432'
+      - '5432:5432'
     networks:
       - "cme-network"
 

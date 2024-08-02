@@ -13,7 +13,8 @@ export class GitManager {
     private readonly logger = new Logger('Docker Manager');
     private repositories = [
         'https://github.com/auroraphtgrp01/cme-main',
-        'https://github.com/auroraphtgrp01/cme-bff'
+        'https://github.com/auroraphtgrp01/cme-bff',
+        'https://github.com/auroraphtgrp01/cme-media'
     ];
     async onCloneRepository() {
         if (!this.configEnv.CLONE_REPOSITORY) { return }
@@ -37,6 +38,9 @@ export class GitManager {
                 if (this.configEnv.YARN_INSTALL) {
                     await this.runYarnInstall(repoPath);
                 }
+                if (repository === 'https://github.com/auroraphtgrp01/cme-main') {
+                    await this.runMigrate(repoPath);
+                }
             } catch (error) {
                 this.logger.error(`Failed to clone repository: ${repository}`, error.message);
             }
@@ -50,6 +54,16 @@ export class GitManager {
             this.logger.log(`Successfully ran yarn install in ${repoPath}`);
         } catch (error) {
             this.logger.error(`Failed to run yarn install in ${repoPath}`, error.message);
+        }
+    }
+
+    async runMigrate(repoPath: string) {
+        this.logger.log(`Running prisma migrate: ${repoPath}`);
+        try {
+            await runSpawn('yarn', ['prisma migrate dev'], { cwd: repoPath });
+            this.logger.log(`Successfully ran prisma migrate in ${repoPath}`);
+        } catch (error) {
+            this.logger.error(`Failed to run prisma migrate in ${repoPath}`, error.message);
         }
     }
 }

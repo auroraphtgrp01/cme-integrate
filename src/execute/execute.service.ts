@@ -12,10 +12,10 @@ export class ExecuteService {
 
   async onInitialProject() {
     const configEnv = await this.onGetConfig()
-    const gitManager = new GitManager(configEnv)
-    await gitManager.onCloneRepository();
     const dockerManager = new DockerManager(configEnv);
     await dockerManager.onDockerBuild();
+    const gitManager = new GitManager(configEnv)
+    await gitManager.onCloneRepository();
   }
 
   async onGetConfig(): Promise<ConfigEnvironment> {
