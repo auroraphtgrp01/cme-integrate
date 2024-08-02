@@ -14,7 +14,7 @@ export class GitManager {
     private repositories = [
         'https://github.com/auroraphtgrp01/cme-main',
         'https://github.com/auroraphtgrp01/cme-bff',
-        'https://github.com/auroraphtgrp01/cme-media'
+        'https://github.com/auroraphtgrp01/cme-media.git'
     ];
     async onCloneRepository() {
         if (!this.configEnv.CLONE_REPOSITORY) { return }
